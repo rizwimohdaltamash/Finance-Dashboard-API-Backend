@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
 const errorMiddleware = require("./middleware/error.middleware");
 
 // Import Routes
@@ -23,12 +25,15 @@ app.get("/", (req, res) => {
   });
 });
 
-// Health Check
-app.get("/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Server is running",
-  });
+// Swagger Docs
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: "Finance Dashboard API Docs",
+  customCss: `.swagger-ui .topbar { background-color: #1a1a2e; } .swagger-ui .topbar-wrapper img { content: none; } .swagger-ui .topbar-wrapper::before { content: '💰 Finance Dashboard API'; color: white; font-size: 1.2rem; font-weight: bold; }`,
+}));
+
+// Root redirect to docs
+app.get("/", (req, res) => {
+  res.redirect("/docs");
 });
 
 // Routes
