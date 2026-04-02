@@ -61,6 +61,20 @@ npm run dev
 
 Server runs on `http://localhost:5000`
 
+### Deploying on Render
+
+Use `npm start` as the start command on Render. Add these environment variables in the Render dashboard:
+
+```env
+NODE_ENV=production
+PORT=10000
+DATABASE_URL=mongodb+srv://<your-username>:<your-password>@<your-cluster>.mongodb.net/finance-dashboard?retryWrites=true&w=majority
+JWT_SECRET=<your-production-secret>
+JWT_EXPIRATION=7d
+```
+
+Do not deploy with placeholder values such as `<username>` or `<cluster-url>`, because the MongoDB connection will fail.
+
 ## 📁 Project Structure
 
 ```

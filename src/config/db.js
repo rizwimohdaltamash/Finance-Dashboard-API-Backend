@@ -2,10 +2,14 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.DATABASE_URL;
+    const mongoURI = (process.env.DATABASE_URL || process.env.MONGODB_URI || "").trim();
 
     if (!mongoURI) {
-      throw new Error("DATABASE_URL is not defined in environment variables");
+      throw new Error("DATABASE_URL or MONGODB_URI is not defined in environment variables");
+    }
+
+    if (mongoURI.includes("<username>") || mongoURI.includes("<password>") || mongoURI.includes("<cluster-url>")) {
+      throw new Error("MongoDB connection string still contains placeholder values");
     }
 
     await mongoose.connect(mongoURI);
